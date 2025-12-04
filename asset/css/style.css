@@ -51,7 +51,7 @@ b, h1, h2, h3, h4, h5 {
   text-align: -webkit-center; }
 
 .text-green {
-  color: #1aab4c !important; }
+  color: #04588c !important; }
 
 input, select {
   border: none;
@@ -114,22 +114,22 @@ input, select {
     color: white !important; }
 
 .btn-green {
-  background-color: #1aab4c;
+  background-color: #0688a6;
   color: white !important; }
   .btn-green:hover {
-    background-color: #1AB14B; }
+    background-color: #04588c; }
 
 .btn-light-green {
-  background-color: #76bd47;
+  background-color: #0688a6;
   color: white !important; }
   .btn-light-green:hover {
-    background-color: #80CB4B; }
+    background-color: #04588c; }
 
 .btn-yellow {
-  background-color: #bad530;
+  background-color: #54c1d9;
   color: white !important; }
   .btn-yellow:hover {
-    background-color: #C2DE31; }
+    background-color: #0478a6; }
 
 .btn-second {
   background-color: transparent;
@@ -273,7 +273,7 @@ header {
   text-align: center; }
 
 nav {
-  background-color: #1aab4c;
+  background-color: #08369d;
   width: 100vw; }
   nav button#hidden {
     display: none; }
@@ -292,7 +292,7 @@ ul.nav {
     color: white;
     padding: 6px 18px; }
     ul.nav li a:hover {
-      background-color: #13903e; }
+      background-color: #04588c; }
 
 @media screen and (max-width: 600px) {
   nav button#hidden {
@@ -307,7 +307,7 @@ main {
   display: flex;
   justify-content: center; }
   main #bg-green {
-    background-color: #1aab4c;
+    background-color: #08369d;
     width: 100vw;
     height: 30px;
     z-index: 0; }

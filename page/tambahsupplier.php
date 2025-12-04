@@ -2,11 +2,11 @@
     <b class="text-green"><i class="fa fa-plus-circle text-green"></i> Tambah data</b>
 </div>
 <form id="form" method="POST" action="./proses/prosestambah.php">
-    <input type="hidden" name="op" value="supplier">
+    <input type="hidden" name="op" value="divisi">
     <div class="panel-middle">
         <div class="group-input">
-            <label for="supplier" >Nama Supplier :</label>
-            <input type="text" class="form-custom" required autocomplete="off" placeholder="Nama Supplier" id="supplier" name="supplier">
+            <label for="supplier" >Nama Divisi :</label>
+            <input type="text" class="form-custom" required autocomplete="off" placeholder="Nama Divisi" id="divisi" name="divisi">
         </div>
     </div>
     <div class="panel-bottom">
