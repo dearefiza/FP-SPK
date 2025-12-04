@@ -13,7 +13,7 @@ require './connect.php';
 </head>
 <body>
 <header>
-    <img src="asset/image/logo.svg" id="logo-header">
+    <img src="asset\image\logopng.png" width="250" height="auto" style="display:block; margin:auto;">
 </header>
 <nav>
     <?php include "nav.php"; ?>

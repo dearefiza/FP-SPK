@@ -2,8 +2,8 @@
     <div class="panel-middle" id="judul">
         <img src="asset/image/supplier.svg">
         <div id="judul-text">
-            <h2 class="text-green">Supplier</h2>
-            Halamanan Administrator Supplier
+            <h2 class="text-green">Divisi</h2>
+            Halamanan Administrator Divisi
         </div>
     </div>
 </div>
@@ -23,15 +23,15 @@
     <div class="col-8">
         <div class="panel">
             <div class="panel-top">
-                <b class="text-green">Daftar Supplier</b>
+                <b class="text-green">Daftar Divisi</b>
             </div>
             <div class="panel-middle">
                 <div class="table-responsive">
                     <table>
-                        <thead><tr><th>No</th><th>Nama</th><th>Aksi</th></tr></thead>
+                        <thead><tr><th>No</th><th>Nama Divisi</th><th>Aksi</th></tr></thead>
                         <tbody>
                         <?php
-                        $query="SELECT * FROM supplier";
+                        $query="SELECT * FROM divisi";
                         $execute=$konek->query($query);
                         if ($execute->num_rows > 0){
                             $no=1;
@@ -39,11 +39,11 @@
                                 echo"
                                 <tr id='data'>
                                     <td>$no</td>
-                                    <td>$data[namaSupplier]</td>
+                                    <td>$data[nama_divisi]</td>
                                     <td>
                                     <div class='norebuttom'>
-                                    <a class=\"btn btn-light-green\" href='./?page=supplier&aksi=ubah&id=".$data['id_supplier']."'><i class='fa fa-pencil-alt'></i></a>
-                                    <a class=\"btn btn-yellow\" data-a=".$data['namaSupplier']." id='hapus' href='./proses/proseshapus.php/?op=supplier&id=".$data['id_supplier']."'><i class='fa fa-trash-alt'></i></a>
+                                    <a class=\"btn btn-light-green\" href='./?page=supplier&aksi=ubah&id=".$data['id_divisi']."'><i class='fa fa-pencil-alt'></i></a>
+                                    <a class=\"btn btn-yellow\" data-a=".$data['nama_divisi']." id='hapus' href='./proses/proseshapus.php/?op=supplier&id=".$data['id_divisi']."'><i class='fa fa-trash-alt'></i></a>
                                     </div></td>
                                 </tr>";
                                 $no++;
