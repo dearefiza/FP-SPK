@@ -343,4 +343,9 @@ body {
     #judul #judul-text h2 {
       margin: 0 !important; }
 
+  .icon {
+    width: 42px;
+    height: 42px;
+}
+
 /*# sourceMappingURL=style.css.map */

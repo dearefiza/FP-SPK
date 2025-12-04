@@ -12,16 +12,19 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 }
 
 $karyawan   = @$_POST['karyawan'];
-$divisi     = @$_POST['divisi'];   // <-- INI PENTING
+$divisi     = @$_POST['divisi'];
 $kriteria   = @$_POST['kriteria'];
 $sifat      = @$_POST['sifat'];
 $nilai      = @$_POST['nilai'];
 $keterangan = @$_POST['keterangan'];
 $bobot      = @$_POST['bobot'];
+$nama_kriteria = @$_POST['nama_kriteria'];
+$id_sifat      = @$_POST['id_sifat'];
+
 
 
 switch ($op){
-    case 'karyawan': // sekarang: tambah data karyawan
+    case 'karyawan': // tambah data karyawan
         $query = "INSERT INTO karyawan (nama_karyawan, id_divisi)
                   VALUES ('$karyawan', '$divisi')";
         $crud->addData($query,$konek);
@@ -32,22 +35,21 @@ switch ($op){
         $crud->addData($query,$konek);
     break;
 
-    case 'kriteria': //tambah data kriteria
-        $cek   = "SELECT namaKriteria FROM kriteria WHERE namaKriteria='$kriteria'";
-        $query = "INSERT INTO kriteria (namaKriteria,sifat) VALUES ('$kriteria','$sifat')";
-        $crud->multiAddData($cek,$query,$konek);
-    break;
+case 'kriteria': // tambah data kriteria
 
-    case 'subkriteria': //tambah data sub kriteria
-        $cek   = "SELECT id_nilaikriteria FROM nilai_kriteria 
-                  WHERE (id_kriteria='$kriteria' AND nilai ='$nilai') 
-                     OR (id_kriteria='$kriteria' AND keterangan = '$keterangan')";
-        $query = "INSERT INTO nilai_kriteria (id_kriteria,nilai,keterangan) 
-                  VALUES ('$kriteria','$nilai','$keterangan');";
-        $crud->multiAddData($cek,$query,$konek);
-    break;
+    $cek   = "SELECT nama_kriteria FROM kriteria 
+              WHERE nama_kriteria='$nama_kriteria'";
 
-    case 'bobot': //tambah data bobot
+    $query = "INSERT INTO kriteria (nama_kriteria, id_sifat, bobot) 
+              VALUES ('$nama_kriteria', '$id_sifat', '$bobot')";
+
+    $crud->multiAddData($cek, $query, $konek);
+
+break;
+
+
+
+    case 'bobot': // tambah data bobot
         $cek   = "SELECT id_bobotkriteria FROM bobot_kriteria WHERE id_jenisbarang='$barang'";
         $query = "";
         for ($i=0;$i<count($kriteria);$i++){

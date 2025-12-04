@@ -17,8 +17,8 @@ if ($execute->num_rows > 0){
     <input type="hidden" name="id" value="<?php echo $data['id_kriteria']; ?>">
     <div class="panel-middle">
         <div class="group-input">
-            <label for="kriteria" >Nama Supplier :</label>
-            <input type="text" value="<?php echo $data['namaKriteria']; ?>" class="form-custom" required autocomplete="off" placeholder="Nama Kriteria" id="kriteria" name="kriteria">
+            <label for="kriteria" >Nama Kriteria :</label>
+            <input type="text" value="<?php echo $data['nama_kriteria']; ?>" class="form-custom" required autocomplete="off" placeholder="Nama Kriteria" id="kriteria" name="kriteria">
         </div>
         <div class="group-input">
             <label for="sifat" >Sifat kriteria :</label>
@@ -34,6 +34,10 @@ if ($execute->num_rows > 0){
                 }
                 ?>
             </select>
+        </div>
+        <div class="group-input">
+            <label for="bobot" >Bobot Kriteria :</label>
+            <input type="text" value="<?php echo $data['bobot']; ?>" class="form-custom" required autocomplete="off" placeholder="Bobot Kriteria" id="bobot" name="bobot">
         </div>
     </div>
     <div class="panel-bottom">

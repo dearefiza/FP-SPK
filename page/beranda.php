@@ -1,7 +1,7 @@
 <!-- judul -->
 <div class="panel">
     <div class="panel-middle" id="judul">
-        <img src="asset/image/beranda.svg">
+        <img src="asset/image/home.png" class="icon">
         <div id="judul-text">
             <h2 class="text-green">BERANDA</h2>
             Halamanan Utama Administrator
