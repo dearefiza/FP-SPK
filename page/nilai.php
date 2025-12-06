@@ -23,7 +23,7 @@
     <div class="col-8">
         <div class="panel">
             <div class="panel-top">
-                <b class="text-green">Daftar Karyawan</b>
+                <b class="text-green">Daftar Penilaian Karyawan</b>
             </div>
             <div class="panel-middle">
                 <div class="table-responsive">
@@ -45,20 +45,20 @@
                         <?php
                         $query = "
                             SELECT 
-                                p.id AS penilaian_id,
-                                karyawan.nama_karyawan,
-                                divisi.nama_divisi,
+                                p.id_penilaian,
+                                k.nama_karyawan,
+                                d.nama_divisi,
                                 MAX(CASE WHEN pk.kriteria_id = 1 THEN pk.nilai END) AS K1,
                                 MAX(CASE WHEN pk.kriteria_id = 2 THEN pk.nilai END) AS K2,
                                 MAX(CASE WHEN pk.kriteria_id = 3 THEN pk.nilai END) AS K3,
                                 MAX(CASE WHEN pk.kriteria_id = 4 THEN pk.nilai END) AS K4,
                                 MAX(CASE WHEN pk.kriteria_id = 5 THEN pk.nilai END) AS K5
                             FROM penilaian p
-                            JOIN karyawan ON p.karyawan_id = karyawan.id
-                            JOIN divisi ON p.divisi_id = divisi.id
-                            LEFT JOIN penilaian_kriteria pk ON p.id = pk.penilaian_id
-                            GROUP BY p.id, karyawan.nama_karyawan, divisi.nama_divisi
-                            ORDER BY p.id ASC
+                            JOIN karyawan k ON p.karyawan_id = k.id_karyawan
+                            JOIN divisi d ON p.divisi_id = d.id_divisi
+                            LEFT JOIN penilaian_kriteria pk ON p.id_penilaian = pk.penilaian_id
+                            GROUP BY p.id_penilaian, k.nama_karyawan, d.nama_divisi
+                            ORDER BY p.id_penilaian ASC
                         ";
 
                         $execute = $konek->query($query);
@@ -77,15 +77,15 @@
                                     <td>{$data['K5']}</td>
                                     <td>
                                         <div class='norebuttom'>
-                                            <a class='btn btn-light-green' href='./?page=penilaian&aksi=ubah&id={$data['penilaian_id']}'><i class='fa fa-pencil-alt'></i></a>
-                                            <a class='btn btn-yellow' data-a='{$data['nama_karyawan']}' id='hapus' href='./proses/proseshapus.php/?op=penilaian&id={$data['penilaian_id']}'><i class='fa fa-trash-alt'></i></a>
+                                            <a class='btn btn-light-green' href='./?page=penilaian&aksi=ubah&id={$data['id_penilaian']}'><i class='fa fa-pencil-alt'></i></a>
+                                            <a class='btn btn-yellow' data-a='{$data['nama_karyawan']}' id='hapus' href='./proses/proseshapus.php/?op=penilaian&id={$data['id_penilaian']}'><i class='fa fa-trash-alt'></i></a>
                                         </div>
                                     </td>
                                 </tr>";
                                 $no++;
                             }
                         } else {
-                            echo "<tr><td class='text-center text-green' colspan='9'>Kosong</td></tr>";
+                            echo "<tr><td class='text-center text-green' colspan='9'>Belum ada data penilaian</td></tr>";
                         }
                         ?>
                         </tbody>
