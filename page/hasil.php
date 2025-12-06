@@ -1,7 +1,7 @@
 <!-- judul -->
 <div class="panel">
     <div class="panel-middle" id="judul">
-        <img src="asset/image/rank.svg">
+        <img src="asset/image/hasil.png" class="icon">
         <div id="judul-text">
             <h2 class="text-green">HASIL</h2>
             Halamanan Utama Hasil Penilaian

@@ -1,7 +1,7 @@
 <!-- judul -->
 <div class="panel">
     <div class="panel-middle" id="judul">
-        <img src="asset/image/barang.svg">
+        <img src="asset/image/karyawan.png" class="icon">
         <div id="judul-text">
             <h2 class="text-green">Karyawan</h2>
             Halamanan Administrator Karyawan
@@ -14,9 +14,9 @@
         <div class="panel">
             <?php
             if (@htmlspecialchars($_GET['aksi'])=='ubah'){
-                include 'ubahbarang.php';
+                include 'ubahkaryawan.php';
             }else{
-                include 'tambahbarang.php';
+                include 'tambahkaryawan.php';
             }
             ?>
         </div>
@@ -44,7 +44,7 @@
                         $query="
                         SELECT karyawan.*, divisi.nama_divisi 
                         FROM karyawan 
-                        LEFT JOIN divisi ON karyawan.id_divisi = divisi.id_divisi
+                        LEFT JOIN divisi ON karyawan.id = divisi.id
                         ";
 
                         $execute=$konek->query($query);
@@ -59,13 +59,13 @@
                                     <td>$data[nama_divisi]</td>   <!-- TAMPILKAN DIVISI -->
                                     <td>
                                         <div class='norebuttom'>
-                                            <a class='btn btn-light-green' href='./?page=barang&aksi=ubah&id=".$data['id_karyawan']."'>
+                                            <a class='btn btn-light-green' href='./?page=karyawan&aksi=ubah&id=".$data['id']."'>
                                                 <i class='fa fa-pencil-alt'></i>
                                             </a>
                                             <a class='btn btn-yellow' 
                                                data-a='".$data['nama_karyawan']."' 
                                                id='hapus' 
-                                               href='./proses/proseshapus.php/?op=barang&id=".$data['id_karyawan']."'>
+                                               href='./proses/proseshapus.php/?op=karyawan&id=".$data['id']."'>
                                                <i class='fa fa-trash-alt'></i>
                                             </a>
                                         </div>

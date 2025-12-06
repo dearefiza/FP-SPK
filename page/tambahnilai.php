@@ -1,70 +1,49 @@
-<!-- judul -->
 <div class="panel-top">
-    <b class="text-green"><i class="fa fa-plus-circle text-green"></i> Tambah data</b>
+    <b class="text-green">Tambah Penilaian</b>
 </div>
-<form id="form" action="./proses/prosestambah.php" method="POST">
-    <input type="hidden" value="nilai" name="op">
+
+<form id="form" method="POST" action="./proses/prosestambah.php">
+    <input type="hidden" name="op" value="penilaian">
+    <input type="hidden" id="karyawan_id" name="karyawan_id">
+    <input type="hidden" id="divisi_id" name="divisi_id">
+
     <div class="panel-middle">
         <div class="group-input">
-            <label for="supplier">Supplier</label>
-            <select class="form-custom" required name="supplier" id="supplier">
-                <option selected disabled>--Pilih Supplier--</option>
-                <?php
-                $query="SELECT id_supplier,namaSupplier FROM supplier";
-                $execute=$konek->query($query);
-                if ($execute->num_rows > 0){
-                    while($data=$execute->fetch_array(MYSQLI_ASSOC)){
-                        echo "<option value=\"$data[id_supplier]\">$data[namaSupplier]</option>";
-                    }
-                }else {
-                    echo "<option disabled value=\"\">Belum ada Supplier</option>";
-                }
-                ?>
-            </select>
+            <label for="id_karyawan_input">ID Karyawan :</label>
+            <input type="number" class="form-custom" required autocomplete="off" placeholder="Masukkan ID karyawan..."
+                id="id_karyawan_input" name="id_karyawan_input" min="1">
         </div>
+
         <div class="group-input">
-            <label for="barang">Jenis Barang</label>
-            <select class="form-custom" required name="barang" id="barang">
-                <option selected disabled>--Pilih Jenis Barang--</option>
-                <?php
-                $query="SELECT * FROM jenis_barang";
-                $execute=$konek->query($query);
-                if ($execute->num_rows > 0){
-                    while($data=$execute->fetch_array(MYSQLI_ASSOC)){
-                        echo "<option value=\"$data[id_jenisbarang]\">$data[namaBarang]</option>";
-                    }
-                }else {
-                    echo "<option disabled value=\"\">Belum ada Jenis Barang</option>";
-                }
-                ?>
-            </select>
+            <label for="nama_karyawan_display">Nama Karyawan :</label>
+            <input type="text" class="form-custom" id="nama_karyawan_display" name="nama_karyawan_display" readonly
+                style="background-color: #f0f0f0; cursor: not-allowed;" placeholder="Akan terisi otomatis">
         </div>
+
+        <div class="group-input">
+            <label for="divisi_display">Divisi :</label>
+            <input type="text" class="form-custom" id="divisi_display" name="divisi_display" readonly
+                style="background-color: #f0f0f0; cursor: not-allowed;" placeholder="Akan terisi otomatis">
+        </div>
+
         <?php
-        $query="SELECT * FROM kriteria";
-        $execute=$konek->query($query);
-        if ($execute->num_rows > 0){
-            while($data=$execute->fetch_array(MYSQLI_ASSOC)){
-                echo "<div class=\"group-input\">";
-                echo "<label for=\"nilai\">$data[namaKriteria]</label>";
-                echo "<input type='hidden' value=$data[id_kriteria] name='kriteria[]'>";
-                echo "<select class=\"form-custom\" required name=\"nilai[]\" id=\"nilai\">";
-                echo "<option disabled selected>-- Pilih $data[namaKriteria] --</option>";
-                $query2="SELECT id_nilaikriteria,keterangan FROM nilai_kriteria WHERE id_kriteria='$data[id_kriteria]'";
-                $execute2=$konek->query($query2);
-                    if ($execute2->num_rows > 0){
-                        while ($data2=$execute2->fetch_array(MYSQLI_ASSOC)){
-                            echo "<option value=\"$data2[id_nilaikriteria]\">$data2[keterangan]</option>";
-                        }
-                    }else{
-                        echo "<option disabled value=\"\">Belum ada Nilai Kriteria</option>";
-                    };
-                echo "</select></div>";
-            }
-        }
-        ?>
+        $qkriteria = "SELECT * FROM kriteria ORDER BY id_kriteria";
+        $reskriteria = $konek->query($qkriteria);
+        while ($k = $reskriteria->fetch_assoc()) {
+            ?>
+            <div class="group-input">
+                <label for="kriteria_<?= $k['id_kriteria'] ?>"><?= $k['nama_kriteria'] ?> :</label>
+                <input type="number" class="form-custom" id="kriteria_<?= $k['id_kriteria'] ?>"
+                    name="kriteria[<?= $k['id_kriteria'] ?>]" step="0.01" min="0" max="100"
+                    placeholder="Masukkan nilai (0-100)" required>
+            </div>
+        <?php } ?>
     </div>
+
     <div class="panel-bottom">
-        <button type="submit" id="buttonsimpan" class="btn btn-green"><i class="fa fa-save"></i> Simpan</button>
+        <button type="submit" id="buttonsimpan" class="btn btn-green">Simpan</button>
         <button type="reset" id="buttonreset" class="btn btn-second">Reset</button>
     </div>
 </form>
+
+<script src="asset/js/karyawan_by_id.js"></script>

@@ -11,59 +11,105 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
     $op = @$_POST['op'];
 }
 
-$karyawan   = @$_POST['karyawan'];
-$divisi     = @$_POST['divisi'];   // <-- INI PENTING
-$kriteria   = @$_POST['kriteria'];
-$sifat      = @$_POST['sifat'];
-$nilai      = @$_POST['nilai'];
-$keterangan = @$_POST['keterangan'];
-$bobot      = @$_POST['bobot'];
-
+$karyawan_id = @$_POST['karyawan_id'];
+$karyawan    = @$_POST['karyawan'];
+$divisi      = @$_POST['divisi'];
+$divisi_id   = @$_POST['divisi_id'];
+$kriteria    = @$_POST['kriteria'];
+$sifat       = @$_POST['sifat'];
+$bobot       = @$_POST['bobot'];
+$nama_kriteria = @$_POST['nama_kriteria'];
+$sifat_kriteria_id = @$_POST['sifat_kriteria_id'];
 
 switch ($op){
-    case 'karyawan': // sekarang: tambah data karyawan
-        $query = "INSERT INTO karyawan (nama_karyawan, id_divisi)
+    case 'karyawan': // tambah data karyawan baru
+        $query = "INSERT INTO karyawan (nama_karyawan, divisi_id)
                   VALUES ('$karyawan', '$divisi')";
-        $crud->addData($query,$konek);
+        $crud->addData($query, $konek);
     break;
 
-    case 'divisi':
+    case 'divisi': // tambah data divisi
         $query = "INSERT INTO divisi (nama_divisi) VALUES ('$divisi')";
-        $crud->addData($query,$konek);
+        $crud->addData($query, $konek);
     break;
 
-    case 'kriteria': //tambah data kriteria
-        $cek   = "SELECT namaKriteria FROM kriteria WHERE namaKriteria='$kriteria'";
-        $query = "INSERT INTO kriteria (namaKriteria,sifat) VALUES ('$kriteria','$sifat')";
-        $crud->multiAddData($cek,$query,$konek);
+    case 'kriteria': // tambah data kriteria
+        $cek   = "SELECT nama_kriteria FROM kriteria 
+                  WHERE nama_kriteria='$nama_kriteria'";
+        
+        $query = "INSERT INTO kriteria (nama_kriteria, sifat_kriteria_id, bobot) 
+                  VALUES ('$nama_kriteria', '$sifat_kriteria_id', '$bobot')";
+        
+        $crud->multiAddData($cek, $query, $konek);
     break;
 
-    case 'subkriteria': //tambah data sub kriteria
-        $cek   = "SELECT id_nilaikriteria FROM nilai_kriteria 
-                  WHERE (id_kriteria='$kriteria' AND nilai ='$nilai') 
-                     OR (id_kriteria='$kriteria' AND keterangan = '$keterangan')";
-        $query = "INSERT INTO nilai_kriteria (id_kriteria,nilai,keterangan) 
-                  VALUES ('$kriteria','$nilai','$keterangan');";
-        $crud->multiAddData($cek,$query,$konek);
-    break;
-
-    case 'bobot': //tambah data bobot
-        $cek   = "SELECT id_bobotkriteria FROM bobot_kriteria WHERE id_jenisbarang='$barang'";
-        $query = "";
-        for ($i=0;$i<count($kriteria);$i++){
-            $query .= "INSERT INTO bobot_kriteria (id_jenisbarang,id_kriteria,bobot) 
-                       VALUES ('$barang','$kriteria[$i]','$bobot[$i]');";
+    case 'penilaian': // tambah data penilaian karyawan
+        // Validasi input
+        if (empty($karyawan_id) || empty($divisi_id) || empty($kriteria)) {
+            echo "<script>
+                    alert('Data tidak lengkap!');
+                    window.history.back();
+                  </script>";
+            exit;
         }
-        $crud->multiAddData($cek,$query,$konek);
+        
+        // Cek apakah karyawan sudah pernah dinilai
+        $cek = "SELECT id FROM penilaian 
+                WHERE karyawan_id='$karyawan_id'";
+        
+        $result = $konek->query($cek);
+        
+        if ($result->num_rows > 0) {
+            echo "<script>
+                    alert('Karyawan ini sudah pernah dinilai!');
+                    window.history.back();
+                  </script>";
+            exit;
+        }
+        
+        // Insert ke tabel penilaian
+        $queryPenilaian = "INSERT INTO penilaian (karyawan_id, divisi_id) 
+                           VALUES ('$karyawan_id', '$divisi_id')";
+        
+        if ($konek->query($queryPenilaian)) {
+            $penilaian_id = $konek->insert_id;
+            
+            // Insert nilai setiap kriteria
+            $queryKriteria = "";
+            foreach ($kriteria as $kriteria_id => $nilai) {
+                $nilai = $konek->real_escape_string($nilai);
+                $queryKriteria .= "INSERT INTO penilaian_kriteria (penilaian_id, kriteria_id, nilai) 
+                                   VALUES ('$penilaian_id', '$kriteria_id', '$nilai');";
+            }
+            
+            // Execute multiple queries
+            if ($konek->multi_query($queryKriteria)) {
+                // Clear remaining results
+                while ($konek->next_result()) {;}
+                
+                echo "<script>
+                        alert('Penilaian berhasil disimpan!');
+                        window.location='../index.php?page=penilaian';
+                      </script>";
+            } else {
+                echo "<script>
+                        alert('Gagal menyimpan nilai kriteria!');
+                        window.history.back();
+                      </script>";
+            }
+        } else {
+            echo "<script>
+                    alert('Gagal menyimpan penilaian!');
+                    window.history.back();
+                  </script>";
+        }
     break;
 
-    case 'nilai': //tambah data nilai
-        $cek   = "SELECT id_supplier FROM nilai_supplier WHERE id_supplier='$supplier'";
-        $query = "";
-        for ($i=0;$i<count($nilai);$i++){
-            $query .= "INSERT INTO nilai_supplier (id_supplier,id_jenisbarang,id_kriteria,id_nilaikriteria) 
-                       VALUES ('$supplier','$barang','$kriteria[$i]','$nilai[$i]');";
-        }
-        $crud->multiAddData($cek,$query,$konek);
+    default:
+        echo "<script>
+                alert('Operasi tidak valid!');
+                window.history.back();
+              </script>";
     break;
 }
+?>

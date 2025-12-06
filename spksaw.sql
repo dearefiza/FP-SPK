@@ -1,184 +1,310 @@
--- phpMyAdmin SQL Dump (Versi SDM/Karyawan dengan AUTO_INCREMENT dan admin)
--- Database: `spksaw`
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Dec 04, 2025 at 11:50 AM
+-- Server version: 8.0.30
+-- PHP Version: 8.2.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `spksaw`
+--
+
 -- --------------------------------------------------------
--- Tabel: divisi
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `id_admin` int UNSIGNED NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `username`, `password`) VALUES
+(1, 'admin', 'admin'),
+(2, 'user', '123');
+
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `divisi`
+--
+
 CREATE TABLE `divisi` (
-  `id_divisi` int(3) NOT NULL AUTO_INCREMENT,
-  `nama_divisi` varchar(50) NOT NULL,
-  PRIMARY KEY (`id_divisi`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id_divisi` int UNSIGNED NOT NULL,
+  `nama_divisi` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `divisi`
+--
 
 INSERT INTO `divisi` (`id_divisi`, `nama_divisi`) VALUES
-(1, 'IT'),
-(2, 'Finance'),
-(3, 'HRD');
+(1, 'Customer Support'),
+(2, 'Engineering'),
+(3, 'Finance'),
+(4, 'HR'),
+(5, 'Legal'),
+(6, 'Marketing'),
+(7, 'Operation'),
+(8, 'Sales');
 
 -- --------------------------------------------------------
--- Tabel: karyawan
--- --------------------------------------------------------
+
+--
+-- Table structure for table `karyawan`
+--
+
 CREATE TABLE `karyawan` (
-  `id_karyawan` int(3) NOT NULL AUTO_INCREMENT,
-  `nama_karyawan` varchar(50) NOT NULL,
-  `id_divisi` int(3) NOT NULL,
-  PRIMARY KEY (`id_karyawan`),
-  KEY `id_divisi` (`id_divisi`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id_karyawan` int UNSIGNED NOT NULL,
+  `nama_karyawan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `divisi_id` int UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `karyawan` (`id_karyawan`, `nama_karyawan`, `id_divisi`) VALUES
+--
+-- Dumping data for table `karyawan`
+--
+
+INSERT INTO `karyawan` (`id_karyawan`, `nama_karyawan`, `divisi_id`) VALUES
 (1, 'Andi Pratama', 1),
 (2, 'Siti Rahmawati', 2),
 (3, 'Budi Santoso', 1);
 
 -- --------------------------------------------------------
--- Tabel: kriteria
--- --------------------------------------------------------
+
+--
+-- Table structure for table `kriteria`
+--
+
 CREATE TABLE `kriteria` (
-  `id_kriteria` int(3) NOT NULL AUTO_INCREMENT,
-  `nama_kriteria` varchar(50) NOT NULL,
-  `sifat` enum('Benefit','Cost') NOT NULL,
-  PRIMARY KEY (`id_kriteria`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id_kriteria` int UNSIGNED NOT NULL,
+  `nama_kriteria` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sifat_kriteria_id` int UNSIGNED NOT NULL,
+  `bobot` decimal(8,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `kriteria` (`id_kriteria`, `nama_kriteria`, `sifat`) VALUES
-(1, 'Kedisiplinan', 'Benefit'),
-(2, 'Kompetensi Kerja', 'Benefit'),
-(3, 'Absensi', 'Cost'),
-(4, 'Loyalitas', 'Benefit'),
-(5, 'Kinerja', 'Benefit');
+--
+-- Dumping data for table `kriteria`
+--
 
--- --------------------------------------------------------
--- Tabel: nilai_kriteria
--- --------------------------------------------------------
-CREATE TABLE `nilai_kriteria` (
-  `id_nilaikriteria` int(3) NOT NULL AUTO_INCREMENT,
-  `id_kriteria` int(3) NOT NULL,
-  `nilai` float NOT NULL,
-  `keterangan` varchar(100) NOT NULL,
-  PRIMARY KEY (`id_nilaikriteria`),
-  KEY `id_kriteria` (`id_kriteria`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-INSERT INTO `nilai_kriteria` (`id_nilaikriteria`, `id_kriteria`, `nilai`, `keterangan`) VALUES
-(1, 1, 1, 'Sangat Baik'),
-(2, 1, 0.75, 'Baik'),
-(3, 1, 0.5, 'Cukup'),
-(4, 1, 0.25, 'Kurang'),
-(5, 2, 1, 'Sangat Kompeten'),
-(6, 2, 0.75, 'Kompeten'),
-(7, 2, 0.5, 'Cukup'),
-(8, 2, 0.25, 'Kurang'),
-(9, 3, 1, '0–2% Tidak Hadir'),
-(10, 3, 0.75, '3–5% Tidak Hadir'),
-(11, 3, 0.5, '6–10% Tidak Hadir'),
-(12, 3, 0.25, '10%+ Tidak Hadir'),
-(13, 4, 1, 'Sangat Loyal'),
-(14, 4, 0.75, 'Loyal'),
-(15, 4, 0.5, 'Cukup Loyal'),
-(16, 4, 0.25, 'Kurang Loyal'),
-(17, 5, 1, 'Sangat Baik'),
-(18, 5, 0.75, 'Baik'),
-(19, 5, 0.5, 'Cukup'),
-(20, 5, 0.25, 'Kurang');
+INSERT INTO `kriteria` (`id_kriteria`, `nama_kriteria`, `sifat_kriteria_id`, `bobot`) VALUES
+(1, 'Tanggung Jawab', 1, '0.37'),
+(2, 'Komunikasi', 1, '0.23'),
+(3, 'Absensi', 2, '0.20'),
+(4, 'Kerja Sama', 1, '0.07'),
+(5, 'Sikap & Etika', 1, '0.12');
 
 -- --------------------------------------------------------
--- Tabel: bobot_kriteria
--- --------------------------------------------------------
-CREATE TABLE `bobot_kriteria` (
-  `id_bobotkriteria` int(3) NOT NULL AUTO_INCREMENT,
-  `id_kriteria` int(3) NOT NULL,
-  `bobot` float NOT NULL,
-  PRIMARY KEY (`id_bobotkriteria`),
-  KEY `id_kriteria` (`id_kriteria`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `bobot_kriteria` (`id_bobotkriteria`, `id_kriteria`, `bobot`) VALUES
-(1, 1, 0.2),
-(2, 2, 0.3),
-(3, 3, 0.2),
-(4, 4, 0.15),
-(5, 5, 0.15);
+--
+-- Table structure for table `penilaian`
+--
 
--- --------------------------------------------------------
--- Tabel: absensi
--- --------------------------------------------------------
-CREATE TABLE `absensi` (
-  `id_absensi` int(5) NOT NULL AUTO_INCREMENT,
-  `id_karyawan` int(3) NOT NULL,
-  `hari_kerja` int(3) NOT NULL,
-  `hadir` int(3) NOT NULL,
-  `sakit` int(3) NOT NULL,
-  `izin` int(3) NOT NULL,
-  `alpha` int(3) NOT NULL,
-  `kehadiran_persen` float NOT NULL,
-  `skor_kehadiran` int(2) NOT NULL,
-  PRIMARY KEY (`id_absensi`),
-  KEY `id_karyawan` (`id_karyawan`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `penilaian` (
+  `id_penilaian` int UNSIGNED NOT NULL,
+  `karyawan_id` int UNSIGNED NOT NULL,
+  `divisi_id` int UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `absensi` (`id_absensi`, `id_karyawan`, `hari_kerja`, `hadir`, `sakit`, `izin`, `alpha`, `kehadiran_persen`, `skor_kehadiran`) VALUES
-(1, 1, 21, 19, 2, 0, 0, 90.48, 5),
-(2, 2, 21, 19, 0, 2, 0, 90.48, 5),
-(3, 3, 21, 18, 0, 1, 1, 85.71, 5);
+--
+-- Dumping data for table `penilaian`
+--
+
+INSERT INTO `penilaian` (`id_penilaian`, `karyawan_id`, `divisi_id`) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 1);
 
 -- --------------------------------------------------------
--- Tabel: nilai_karyawan
+
+--
+-- Table structure for table `penilaian_kriteria`
+--
+
+CREATE TABLE `penilaian_kriteria` (
+  `id_penilaian_kriteria` int UNSIGNED NOT NULL,
+  `penilaian_id` int UNSIGNED NOT NULL,
+  `kriteria_id` int UNSIGNED NOT NULL,
+  `nilai` decimal(8,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `penilaian_kriteria`
+--
+
+INSERT INTO `penilaian_kriteria` (`id_penilaian_kriteria`, `penilaian_id`, `kriteria_id`, `nilai`) VALUES
+(1, 1, 1, 64.00),
+(2, 1, 2, 81.00),
+(3, 1, 3, 90.48),
+(4, 1, 4, 62.00),
+(5, 1, 5, 66.00);
+
+-- Siti Rahmawati (penilaian_id = 2)
+INSERT INTO `penilaian_kriteria` (`id_penilaian_kriteria`, `penilaian_id`, `kriteria_id`, `nilai`) VALUES
+(6, 2, 1, 59.00),
+(7, 2, 2, 80.00),
+(8, 2, 3, 90.48),
+(9, 2, 4, 52.00),
+(10, 2, 5, 78.00);
+
+-- Budi Santoso (penilaian_id = 3)
+INSERT INTO `penilaian_kriteria` (`id_penilaian_kriteria`, `penilaian_id`, `kriteria_id`, `nilai`) VALUES
+(11, 3, 1, 89.00),
+(12, 3, 2, 74.00),
+(13, 3, 3, 85.71),
+(14, 3, 4, 84.00),
+(15, 3, 5, 90.00);
+
 -- --------------------------------------------------------
-CREATE TABLE `nilai_karyawan` (
-  `id_nilaikaryawan` int(3) NOT NULL AUTO_INCREMENT,
-  `id_karyawan` int(3) NOT NULL,
-  `id_kriteria` int(3) NOT NULL,
-  `id_nilaikriteria` int(3) NOT NULL,
-  PRIMARY KEY (`id_nilaikaryawan`),
-  KEY `id_karyawan` (`id_karyawan`),
-  KEY `id_kriteria` (`id_kriteria`),
-  KEY `id_nilaikriteria` (`id_nilaikriteria`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `nilai_karyawan` (`id_nilaikaryawan`, `id_karyawan`, `id_kriteria`, `id_nilaikriteria`) VALUES
-(1, 1, 1, 2),
-(2, 1, 2, 6),
-(3, 1, 4, 14),
-(4, 1, 5, 18),
-(5, 2, 1, 3),
-(6, 2, 2, 7),
-(7, 2, 4, 15),
-(8, 2, 5, 19);
+--
+-- Table structure for table `sifat_kriteria`
+--
 
--- --------------------------------------------------------
--- Tabel: hasil
--- --------------------------------------------------------
-CREATE TABLE `hasil` (
-  `id_hasil` int(3) NOT NULL AUTO_INCREMENT,
-  `id_karyawan` int(3) NOT NULL,
-  `hasil` float NOT NULL,
-  PRIMARY KEY (`id_hasil`),
-  KEY `id_karyawan` (`id_karyawan`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `sifat_kriteria` (
+  `id_sifat` int UNSIGNED NOT NULL,
+  `nama_sifat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `hasil` (`id_hasil`, `id_karyawan`, `hasil`) VALUES
-(1, 1, 0.82),
-(2, 2, 0.79);
+--
+-- Dumping data for table `sifat_kriteria`
+--
 
--- --------------------------------------------------------
--- Tabel: admin
--- --------------------------------------------------------
-CREATE TABLE `admin` (
-  `id_admin` int(3) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_admin`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `sifat_kriteria` (`id_sifat`, `nama_sifat`) VALUES
+(1, 'Benefit'),
+(2, 'Cost');
 
-INSERT INTO `admin` (`username`, `password`) VALUES
-('admin', 'admin'),
-('superuser', 'superpass');
+--
+-- Indexes for dumped tables
+--
 
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id_admin`);
+
+--
+-- Indexes for table `divisi`
+--
+ALTER TABLE `divisi`
+  ADD PRIMARY KEY (`id_divisi`);
+
+--
+-- Indexes for table `karyawan`
+--
+ALTER TABLE `karyawan`
+  ADD PRIMARY KEY (`id_karyawan`),
+  ADD KEY `karyawan_divisi_id_foreign` (`divisi_id`);
+
+--
+-- Indexes for table `kriteria`
+--
+ALTER TABLE `kriteria`
+  ADD PRIMARY KEY (`id_kriteria`);
+
+--
+-- Indexes for table `penilaian`
+--
+ALTER TABLE `penilaian`
+  ADD PRIMARY KEY (`id_penilaian`),
+  ADD KEY `penilaian_karyawan_id_foreign` (`karyawan_id`),
+  ADD KEY `penilaian_divisi_id_foreign` (`divisi_id`);
+
+--
+-- Indexes for table `penilaian_kriteria`
+--
+ALTER TABLE `penilaian_kriteria`
+  ADD PRIMARY KEY (`id_penilaian_kriteria`);
+
+--
+-- Indexes for table `sifat_kriteria`
+--
+ALTER TABLE `sifat_kriteria`
+  ADD PRIMARY KEY (`id_sifat`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `divisi`
+--
+ALTER TABLE `divisi`
+  MODIFY `id_divisi` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `karyawan`
+--
+ALTER TABLE `karyawan`
+  MODIFY `id_karyawan` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `kriteria`
+--
+ALTER TABLE `kriteria`
+  MODIFY `id_kriteria` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `penilaian`
+--
+ALTER TABLE `penilaian`
+  MODIFY `id_penilaian` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `penilaian_kriteria`
+--
+ALTER TABLE `penilaian_kriteria`
+  MODIFY `id_penilaian_kriteria` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `sifat_kriteria`
+--
+ALTER TABLE `sifat_kriteria`
+  MODIFY `id_sifat` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `karyawan`
+--
+ALTER TABLE `karyawan`
+  ADD CONSTRAINT `karyawan_divisi_id_foreign` FOREIGN KEY (`divisi_id`) REFERENCES `divisi` (`id_divisi`);
+
+--
+-- Constraints for table `penilaian`
+--
+ALTER TABLE `penilaian`
+  ADD CONSTRAINT `penilaian_divisi_id_foreign` FOREIGN KEY (`divisi_id`) REFERENCES `divisi` (`id_divisi`) ON DELETE CASCADE,
+  ADD CONSTRAINT `penilaian_karyawan_id_foreign` FOREIGN KEY (`karyawan_id`) REFERENCES `karyawan` (`id_karyawan`) ON DELETE CASCADE;
+
+
+--
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id_admin` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

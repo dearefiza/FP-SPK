@@ -3,10 +3,11 @@
     <input type="hidden" name="op" value="karyawan">
 
     <div class="panel-middle">
-        <div class="group-input">
+        <div class="group-input input-dropdown">
             <label for="karyawan">Nama Karyawan :</label>
             <input type="text" class="form-custom" required autocomplete="off"
                    placeholder="Nama Karyawan" id="karyawan" name="karyawan">
+            <ul class="dropdown" id="suggestions"></ul>
         </div>
 
         <div class="group-input">
@@ -30,4 +31,5 @@
         </button>
         <button type="reset" id="buttonreset" class="btn btn-second">Reset</button>
     </div>
+    <script src="js/autocomplete.js"></script>
 </form>
