@@ -8,34 +8,35 @@
     <input type="hidden" id="divisi_id" name="divisi_id">
 
     <div class="panel-middle">
-        <!-- Input Nama Karyawan dengan Autocomplete -->
-        <div class="group-input input-dropdown">
-            <label for="karyawan">Nama Karyawan :</label>
-            <input type="text" class="form-custom" required autocomplete="off"
-                   placeholder="Ketik nama karyawan..." id="karyawan" name="karyawan">
-            <ul class="dropdown" id="suggestions"></ul>
+        <div class="group-input">
+            <label for="id_karyawan_input">ID Karyawan :</label>
+            <input type="number" class="form-custom" required autocomplete="off" placeholder="Masukkan ID karyawan..."
+                id="id_karyawan_input" name="id_karyawan_input" min="1">
         </div>
 
-        <!-- Divisi Otomatis Terisi (Readonly) -->
+        <div class="group-input">
+            <label for="nama_karyawan_display">Nama Karyawan :</label>
+            <input type="text" class="form-custom" id="nama_karyawan_display" name="nama_karyawan_display" readonly
+                style="background-color: #f0f0f0; cursor: not-allowed;" placeholder="Akan terisi otomatis">
+        </div>
+
         <div class="group-input">
             <label for="divisi_display">Divisi :</label>
-            <input type="text" class="form-custom" id="divisi_display" name="divisi_display" 
-                   readonly style="background-color: #f0f0f0; cursor: not-allowed;" 
-                   placeholder="Akan terisi otomatis">
+            <input type="text" class="form-custom" id="divisi_display" name="divisi_display" readonly
+                style="background-color: #f0f0f0; cursor: not-allowed;" placeholder="Akan terisi otomatis">
         </div>
 
-        <!-- Input Nilai Kriteria -->
         <?php
         $qkriteria = "SELECT * FROM kriteria ORDER BY id_kriteria";
         $reskriteria = $konek->query($qkriteria);
         while ($k = $reskriteria->fetch_assoc()) {
-        ?>
-        <div class="group-input">
-            <label for="kriteria_<?= $k['id_kriteria'] ?>"><?= $k['nama_kriteria'] ?> :</label>
-            <input type="number" class="form-custom" id="kriteria_<?= $k['id_kriteria'] ?>" 
-                   name="kriteria[<?= $k['id_kriteria'] ?>]" step="0.01" min="0" max="100" 
-                   placeholder="Masukkan nilai (0-100)" required>
-        </div>
+            ?>
+            <div class="group-input">
+                <label for="kriteria_<?= $k['id_kriteria'] ?>"><?= $k['nama_kriteria'] ?> :</label>
+                <input type="number" class="form-custom" id="kriteria_<?= $k['id_kriteria'] ?>"
+                    name="kriteria[<?= $k['id_kriteria'] ?>]" step="0.01" min="0" max="100"
+                    placeholder="Masukkan nilai (0-100)" required>
+            </div>
         <?php } ?>
     </div>
 
@@ -45,4 +46,4 @@
     </div>
 </form>
 
-<script src="js/autocomplete.js"></script>
+<script src="asset/js/karyawan_by_id.js"></script>
