@@ -323,3 +323,19 @@ label { display:block; margin-bottom:5px; font-weight:500; }
   background: #334eac !important;
   color: #fff !important;
 }
+
+/* FIX tombol edit/hapus tidak bisa diklik */
+table tbody tr {
+    position: relative;
+    z-index: 0;
+}
+
+table tbody tr td {
+    position: relative;
+    z-index: 5;
+}
+
+.norebuttom a {
+    position: relative;
+    z-index: 10 !important;
+}

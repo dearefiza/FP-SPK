@@ -1,77 +1,135 @@
 <?php
 require '../connect.php';
-require '../class/crud.php';
-$crud=new crud($konek);
-if ($_SERVER['REQUEST_METHOD']=='GET') {
-    $id=@$_GET['id'];
-    $op=@$_GET['op'];
-}else if ($_SERVER['REQUEST_METHOD']=='POST'){
-    $id=@$_POST['id'];
-    $op=@$_POST['op'];
+
+// ambil op dan id
+$op = $_POST['op'] ?? $_GET['op'] ?? '';
+$id = $_POST['id'] ?? $_GET['id'] ?? '';
+
+/*******************************
+ * UPDATE DATA KARYAWAN
+ *******************************/
+if ($op == 'karyawan') {
+
+    $nama   = $_POST['karyawan'] ?? '';
+    $divisi = $_POST['divisi'] ?? '';
+
+    if ($nama == '' || $divisi == '') {
+        echo "<script>alert('Data karyawan belum lengkap');history.back();</script>";
+        exit;
+    }
+
+    $query = "UPDATE karyawan 
+              SET nama_karyawan='$nama', divisi_id='$divisi'
+              WHERE id_karyawan='$id'";
+
+    if ($konek->query($query)) {
+        echo "<script>alert('Karyawan berhasil diubah'); window.location='../index.php?page=karyawan';</script>";
+    } else {
+        echo "<script>alert('Gagal mengubah: ".$konek->error."');history.back();</script>";
+    }
+    exit;
 }
 
-$karyawan_id = @$_POST['karyawan_id'];
-$karyawan    = @$_POST['karyawan'];
-$divisi      = @$_POST['divisi'];
-$divisi_id   = @$_POST['divisi_id'];
-$kriteria    = @$_POST['kriteria'];
-$sifat       = @$_POST['sifat'];
-$bobot       = @$_POST['bobot'];
-$nama_kriteria = @$_POST['nama_kriteria'];
-$sifat_kriteria_id = @$_POST['sifat_kriteria_id'];
 
-switch ($op){
-    case 'karyawan':
-        $query="UPDATE karyawan SET nama_karyawan='$karyawan', divisi_id='$divisi' WHERE id_karyawan='$id'";
-        $crud->update($query,$konek,'./?page=karyawan');
-        break;
-    case 'divisi':
-        $query="UPDATE divisi SET nama_divisi='$divisi' WHERE id_divisi='$id'";
-        $crud->update($query,$konek,'./?page=divisi');
-        break;
-    case 'kriteria':
-         $cek = "SELECT nama_kriteria FROM kriteria 
-            WHERE nama_kriteria='$kriteria' AND id_kriteria!='$id'";
-            // Query update
-            $query = "UPDATE kriteria 
-                    SET nama_kriteria='$kriteria', 
-                        sifat_kriteria_id='$sifat',
-                        bobot='$bobot'
-                    WHERE id_kriteria='$id'";
-            $crud->multiUpdate($cek, $query, $konek, './?page=kriteria');
-        break;
-    case 'penilaian':
-            $id_penilaian = $_POST['id_penilaian'];
-            $kriteria = $_POST['kriteria'];
+/*******************************
+ * UPDATE DATA DIVISI
+ *******************************/
+if ($op == 'divisi') {
 
-            if (!$kriteria) {
-                echo "<script>alert('Data nilai tidak lengkap!'); window.history.back();</script>";
-                exit;
-            }
+    $nama = $_POST['divisi'] ?? '';
 
-            // HAPUS NILAI LAMA
-            $konek->query("DELETE FROM penilaian_kriteria WHERE penilaian_id = '$id_penilaian'");
+    if ($nama == '') {
+        echo "<script>alert('Nama divisi tidak boleh kosong');history.back();</script>";
+        exit;
+    }
 
-            // INSERT NILAI BARU
-            $multi = "";
-            foreach ($kriteria as $idk => $nilai) {
-                $idk = intval($idk);
-                $nilai = floatval($nilai);
+    $query = "UPDATE divisi SET nama_divisi='$nama' WHERE id_divisi='$id'";
 
-                $multi .= "INSERT INTO penilaian_kriteria (penilaian_id, kriteria_id, nilai) 
-                        VALUES ($id_penilaian, $idk, $nilai);";
-            }
-
-            if ($konek->multi_query($multi)) {
-                while ($konek->more_results() && $konek->next_result()) {}
-
-                echo "<script>
-                        alert('Perubahan berhasil disimpan!');
-                        window.location='../index.php?page=penilaian';
-                    </script>";
-            } else {
-                echo "<script>alert('Gagal menyimpan perubahan!'); window.history.back();</script>";
-            }
-        break;
-
+    if ($konek->query($query)) {
+        echo "<script>alert('Divisi berhasil diubah'); window.location='../index.php?page=divisi';</script>";
+    } else {
+        echo "<script>alert('Gagal mengubah: ".$konek->error."');history.back();</script>";
+    }
+    exit;
 }
+
+
+/*******************************
+ * UPDATE DATA KRITERIA
+ *******************************/
+if ($op == 'kriteria') {
+
+    $nama   = $_POST['nama_kriteria'] ?? '';
+    $sifat  = $_POST['sifat_kriteria_id'] ?? '';
+    $bobot  = $_POST['bobot'] ?? '';
+
+    if ($nama == '' || $sifat == '' || $bobot == '') {
+        echo "<script>alert('Data kriteria belum lengkap');history.back();</script>";
+        exit;
+    }
+
+    // Cek duplikasi nama
+    $cek = $konek->query("SELECT id_kriteria FROM kriteria 
+                          WHERE nama_kriteria='$nama' 
+                          AND id_kriteria != '$id'");
+    if ($cek->num_rows > 0) {
+        echo "<script>alert('Nama kriteria sudah ada!');history.back();</script>";
+        exit;
+    }
+
+    $query = "UPDATE kriteria SET 
+                nama_kriteria='$nama',
+                sifat_kriteria_id='$sifat',
+                bobot='$bobot'
+              WHERE id_kriteria='$id'";
+
+    if ($konek->query($query)) {
+        echo "<script>alert('Kriteria berhasil diubah'); window.location='../index.php?page=kriteria';</script>";
+    } else {
+        echo "<script>alert('Gagal mengubah: ".$konek->error."');history.back();</script>";
+    }
+    exit;
+}
+
+
+/*******************************
+ * UPDATE PENILAIAN
+ *******************************/
+if ($op == 'penilaian') {
+
+    $id_penilaian = $_POST['id_penilaian'] ?? '';
+    $kriteria     = $_POST['kriteria'] ?? [];
+
+    if (!$id_penilaian || empty($kriteria)) {
+        echo "<script>alert('Data penilaian tidak lengkap');history.back();</script>";
+        exit;
+    }
+
+    // Hapus nilai lama
+    $konek->query("DELETE FROM penilaian_kriteria WHERE penilaian_id='$id_penilaian'");
+
+    // Insert nilai baru
+    $multi = "";
+    foreach ($kriteria as $idk => $nilai) {
+        $nilai = floatval($nilai);
+        $idk   = intval($idk);
+
+        $multi .= "INSERT INTO penilaian_kriteria 
+                    (penilaian_id, kriteria_id, nilai)
+                    VALUES ('$id_penilaian', '$idk', '$nilai');";
+    }
+
+    if ($konek->multi_query($multi)) {
+        while ($konek->more_results() && $konek->next_result()) {}
+        echo "<script>alert('Penilaian berhasil diubah'); window.location='../index.php?page=penilaian';</script>";
+    } else {
+        echo "<script>alert('Gagal menyimpan perubahan: ".$konek->error."');history.back();</script>";
+    }
+
+    exit;
+}
+
+
+// Jika op tidak dikenal
+echo "<script>alert('Operasi tidak valid');history.back();</script>";
+exit;

@@ -1,9 +1,13 @@
+<?php
+include './proses/proseshitung_saw.php';
+?>
+
 <div class="panel">
     <div class="panel-middle" id="judul">
         <img src="asset/image/hasil.png" class="icon">
         <div id="judul-text">
             <h2 class="text-green">Hasil Perankingan (SAW)</h2>
-            Halaman Perangkingan Kinerja Karyawan
+            Halaman Perankingan Kinerja Karyawan
         </div>
     </div>
 </div>
@@ -23,12 +27,6 @@
     border-radius: 8px;
     border: 1px solid #d0d4d8;
     font-size: 14px;
-    outline: none;
-}
-
-.btn-search:focus {
-    border-color: #4c8bf5;
-    box-shadow: 0 0 4px rgba(76,139,245,0.4);
 }
 
 .btn-pdf {
@@ -38,58 +36,64 @@
     border-radius: 6px;
     text-decoration: none;
     font-size: 14px;
-    transition: 0.2s;
 }
 
-.btn-pdf:hover {
-    background: #c82333;
-}
-
-/* ---- TABLE STYLING ---- */
 .table-ranking {
     width: 100%;
     border-collapse: collapse;
     font-size: 15px;
-    border-radius: 10px;
-    overflow: hidden;
+    margin-top: 10px;
 }
 
-.table-ranking thead tr {
+.table-ranking th, .table-ranking td {
+    padding: 10px 12px;
+    border: 1px solid #eee;
+}
+
+.table-ranking thead {
     background: #eef2f5;
+    font-weight: bold;
 }
 
-.table-ranking thead th {
-    padding: 14px 12px;
-    font-weight: 600;
-    color: #333;
-    border-bottom: 2px solid #ddd;
-    text-align: left;
-}
-
-.table-ranking tbody tr td {
-    padding: 12px 12px;
-    border-bottom: 1px solid #eee;
-}
-
-.table-ranking tbody tr:nth-child(even) {
-    background: #fafafa;
-}
-
-.table-ranking tbody tr:hover {
-    background: #f1f7ff;
-}
-
-.table-ranking td:last-child {
-    text-align: right;
+.section-title {
+    margin-top: 30px;
+    font-size: 20px;
     font-weight: bold;
     color: #1a73e8;
+    border-left: 6px solid #1a73e8;
+    padding-left: 10px;
+}
+
+/* TOP 3 COLOR */
+.top1-row { background: #fff4b8 !important; font-weight: bold; }
+.top2-row { background: #e8e8e8 !important; font-weight: bold; }
+.top3-row { background: #f7d7c4 !important; font-weight: bold; }
+
+/* collapsible */
+.collapse-box {
+    margin-top: 10px;
+}
+
+.collapse-header {
+    background: #1a73e8;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.collapse-content {
+    display: none;
+    margin-top: 10px;
 }
 </style>
 
 <div class="panel">
     <div class="panel-middle">
 
-        <!-- Bar Atas: Search + Export PDF -->
+        <!-- ============ SEARCH BAR + PDF ============ -->
         <div class="action-bar">
             <input type="text" id="searchSAW" class="btn-search" placeholder="Cari karyawan / divisi...">
 
@@ -98,40 +102,95 @@
             </a>
         </div>
 
-        <!-- Tabel Hasil SAW -->
+
+
+
+
+        <!-- ====================================================== -->
+        <!-- ==================== RANKING ========================== -->
+        <!-- ====================================================== -->
+        <div class="section-title">Hasil Akhir Perankingan</div>
+
         <table class="table-ranking" id="tableSAW">
             <thead>
                 <tr>
-                    <th style="width:80px;">Ranking</th>
+                    <th style="width: 80px;">Ranking</th>
                     <th>Nama Karyawan</th>
                     <th>Divisi</th>
-                    <th style="width:140px; text-align:right;">Nilai Akhir</th>
+                    <th>Nilai Akhir</th>
                 </tr>
             </thead>
 
             <tbody>
-                <?php
-                include './proses/proseshitung_saw.php';
-                $rank = 1;
-                foreach ($hasil_ranking as $row) {
-                    echo "
-                    <tr>
-                        <td>$rank</td>
-                        <td>{$row['nama']}</td>
-                        <td>{$row['divisi']}</td>
-                        <td>{$row['hasil']}</td>
-                    </tr>";
-                    $rank++;
-                }
-                ?>
+            <?php
+            $rank = 1;
+            foreach ($hasil_ranking as $row):
+
+                // Tentukan warna TOP 3
+                $rowClass = "";
+                if ($rank == 1) $rowClass = "top1-row";
+                else if ($rank == 2) $rowClass = "top2-row";
+                else if ($rank == 3) $rowClass = "top3-row";
+            ?>
+                <tr class="<?= $rowClass; ?>">
+                    <td><?= $rank; ?></td>
+                    <td><?= $row['nama']; ?></td>
+                    <td><?= $row['divisi']; ?></td>
+                    <td><b><?= $row['hasil']; ?></b></td>
+                </tr>
+            <?php
+            $rank++;
+            endforeach;
+            ?>
             </tbody>
         </table>
+
+
+
+
+
+        <!-- ====================================================== -->
+        <!-- =========== DETAIL PERHITUNGAN SAW ==================== -->
+        <!-- ====================================================== -->
+        <div class="section-title">Detail Perhitungan SAW</div>
+
+        <div class="collapse-box">
+            <div class="collapse-header" onclick="toggleCollapse('wsaw')">
+                ➕ Lihat Perhitungan Weighted Sum (W × R)
+            </div>
+
+            <div class="collapse-content" id="wsaw">
+                <table class="table-ranking">
+                    <thead>
+                        <tr>
+                            <th>Nama Karyawan</th>
+                            <?php foreach ($kriteria as $k): ?>
+                                <th><?= $k['nama_kriteria']; ?> (W = <?= $k['bobot']; ?>)</th>
+                            <?php endforeach; ?>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    <?php foreach ($weighted_sum as $row): ?>
+                        <tr>
+                            <td><?= $row['nama']; ?></td>
+                            <?php foreach ($row['wr'] as $w): ?>
+                                <td><?= number_format($w, 4); ?></td>
+                            <?php endforeach; ?>
+                            <td><b><?= number_format($row['total'], 4); ?></b></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
     </div>
 </div>
 
 <script>
-// SEARCH FILTER
+// SEARCH FILTER (ranking only)
 document.getElementById('searchSAW').addEventListener('keyup', function () {
     let filter = this.value.toLowerCase();
     let rows = document.querySelectorAll('#tableSAW tbody tr');
@@ -141,4 +200,10 @@ document.getElementById('searchSAW').addEventListener('keyup', function () {
         row.style.display = text.includes(filter) ? '' : 'none';
     });
 });
+
+// COLLAPSE FUNCTION
+function toggleCollapse(id) {
+    let box = document.getElementById(id);
+    box.style.display = (box.style.display === "block") ? "none" : "block";
+}
 </script>

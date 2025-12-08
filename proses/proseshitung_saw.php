@@ -1,7 +1,4 @@
 <?php
-// proseshitung_saw.php
-// Tidak perlu require connect.php — sudah di-include dari index/admin
-
 // ===============================
 // 1. Ambil data kriteria
 // ===============================
@@ -36,11 +33,28 @@ $data   = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 // ===============================
 if (empty($data)) {
     $hasil_ranking = [];
+    $matriks_X = [];
+    $matriks_R = [];
+    $weighted_sum = [];
     return;
 }
 
 // ===============================
-// 3. Cari MAX dan MIN setiap kolom K1–K5
+// 3. Buat Matriks Keputusan Awal (X)
+// ===============================
+$matriks_X = [];
+foreach ($data as $row) {
+    $matriks_X[] = [
+        'nama'  => $row['nama_karyawan'],
+        'divisi'=> $row['nama_divisi'],
+        'nilai' => [
+            $row['K1'], $row['K2'], $row['K3'], $row['K4'], $row['K5']
+        ]
+    ];
+}
+
+// ===============================
+// 4. Cari MAX dan MIN setiap kolom K1–K5
 // ===============================
 $maxmin = [];
 for ($i = 1; $i <= 5; $i++) {
@@ -52,35 +66,55 @@ for ($i = 1; $i <= 5; $i++) {
 }
 
 // ===============================
-// 4. Proses Normalisasi + Hitung Nilai SAW
+// 5. Proses Normalisasi (R) + Weighted Sum
 // ===============================
+$matriks_R = [];
+$weighted_sum = [];
 $hasil_ranking = [];
 
 foreach ($data as $row) {
 
+    $normRow = [];   // menyimpan nilai normalisasi
+    $wrRow   = [];   // menyimpan nilai (W × R)
     $totalSAW = 0;
 
-    // Loop setiap kriteria K1–K5
+    // Loop kriteria K1–K5
     for ($i = 1; $i <= 5; $i++) {
 
         $nilai = (float)$row["K".$i];
         $bobot = (float)$kriteria[$i-1]['bobot'];
 
-        // sifat_kriteria_id → 1 = Benefit, 2 = Cost
         $tipe = ($kriteria[$i-1]['sifat_kriteria_id'] == 1) ? 'benefit' : 'cost';
 
         // Normalisasi
         if ($tipe === 'benefit') {
             $normal = ($nilai > 0) ? $nilai / $maxmin[$i]['max'] : 0;
-        } else { // COST
+        } else { 
             $normal = ($nilai > 0) ? $maxmin[$i]['min'] / $nilai : 0;
         }
 
-        // Hitung nilai terbobot
-        $totalSAW += $normal * $bobot;
+        // W × R
+        $wr = $normal * $bobot;
+        $totalSAW += $wr;
+
+        $normRow[] = $normal;
+        $wrRow[]   = $wr;
     }
 
-    // Masukkan hasil
+    // Masukkan ke matriks Normalisasi (R)
+    $matriks_R[] = [
+        'nama'  => $row['nama_karyawan'],
+        'nilai' => $normRow
+    ];
+
+    // Masukkan ke Weighted Sum
+    $weighted_sum[] = [
+        'nama'  => $row['nama_karyawan'],
+        'wr'    => $wrRow,
+        'total' => round($totalSAW, 4)
+    ];
+
+    // Masukkan ke Ranking
     $hasil_ranking[] = [
         'nama'   => $row['nama_karyawan'],
         'divisi' => $row['nama_divisi'],
@@ -89,7 +123,7 @@ foreach ($data as $row) {
 }
 
 // ===============================
-// 5. Urutkan dari terbesar ke terkecil
+// 6. Urutkan Ranking
 // ===============================
 usort($hasil_ranking, function($a, $b) {
     return $b['hasil'] <=> $a['hasil'];

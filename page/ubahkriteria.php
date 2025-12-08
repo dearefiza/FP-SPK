@@ -1,7 +1,6 @@
 <?php
 $id = htmlspecialchars(@$_GET['id']);
 $query = "SELECT * FROM kriteria WHERE id_kriteria='$id'";
-$sifat = array("Benefit","Cost");
 $execute = $konek->query($query);
 
 if ($execute->num_rows > 0){
@@ -18,41 +17,44 @@ if ($execute->num_rows > 0){
 
 <form id="form" method="POST" action="./proses/prosesubah.php">
     <input type="hidden" name="op" value="kriteria">
-    <input type="hidden" name="id" value="<?php echo $data['id_kriteria']; ?>">
+    <input type="hidden" name="id" value="<?= $data['id_kriteria']; ?>">
 
     <div class="panel-middle">
 
+        <!-- NAMA KRITERIA -->
         <div class="group-input">
-            <label for="kriteria">Nama Kriteria :</label>
-            <input type="text" value="<?php echo $data['nama_kriteria']; ?>" 
-                   class="form-custom" required autocomplete="off" 
-                   placeholder="Nama Kriteria" id="kriteria" name="kriteria">
+            <label for="nama_kriteria">Nama Kriteria :</label>
+            <input 
+                type="text"
+                class="form-custom"
+                required
+                id="nama_kriteria"
+                name="nama_kriteria"
+                value="<?= $data['nama_kriteria']; ?>"
+                placeholder="Nama Kriteria">
         </div>
 
+        <!-- SIFAT KRITERIA -->
         <div class="group-input">
-            <label for="sifat_kriteria">Sifat Kriteria :</label>
-            <select class="form-custom" required id="sifat_kriteria_id" name="sifat_kriteria">
-                <?php foreach ($sifat as $datasifat) { ?>
-                    <option value="<?= $datasifat ?>" <?= ($datasifat == $data['sifat_kriteria_id']) ? 'selected' : '' ?>>
-                        <?= $datasifat ?>
-                    </option>
-                <?php } ?>
+            <label for="sifat_kriteria_id">Sifat Kriteria :</label>
+            <select class="form-custom" id="sifat_kriteria_id" name="sifat_kriteria_id" required>
+                <option value="1" <?= ($data['sifat_kriteria_id'] == 1 ? 'selected' : '') ?>>Benefit</option>
+                <option value="2" <?= ($data['sifat_kriteria_id'] == 2 ? 'selected' : '') ?>>Cost</option>
             </select>
         </div>
 
-        <!-- Tambahan Bobot -->
+        <!-- BOBOT -->
         <div class="group-input">
-            <label for="bobot">Bobot kriteria :</label>
+            <label for="bobot">Bobot Kriteria :</label>
             <input 
-                type="number" 
-                step="0.01" 
+                type="number"
+                step="0.01"
                 class="form-custom"
-                required 
-                value="<?php echo $data['bobot']; ?>" 
-                autocomplete="off" 
-                placeholder="Bobot kriteria (ex: 0.25)" 
-                id="bobot" 
-                name="bobot">
+                required
+                id="bobot"
+                name="bobot"
+                value="<?= $data['bobot']; ?>"
+                placeholder="Bobot kriteria (ex: 0.25)">
         </div>
 
     </div>
