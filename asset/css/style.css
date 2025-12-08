@@ -1,0 +1,325 @@
+/* ======================= */
+/* FONT & RESET */
+/* ======================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+a { text-decoration: none; color: inherit; }
+
+body {
+  background: #f4f6f9;
+  color: #1f2937;
+}
+
+/* ======================= */
+/* GLOBAL UTILITY */
+/* ======================= */
+.text-center { text-align: center; }
+.text-green { color: #1D4ED8 !important; }
+.text-white { color: #fff; }
+.b-bolder { font-weight: 700; }
+
+/* ======================= */
+/* BUTTONS */
+/* ======================= */
+.btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+  border: none;
+}
+.btn-primary { background: #1D4ED8; color: #fff; }
+.btn-primary:hover { background: #1E40AF; }
+.btn-danger { background: #E11D48; color: white; }
+.btn-danger:hover { background: #B91C1C; }
+
+/* Button Add Floating */
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #1D4ED8;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-add:hover { background: #1E40AF; }
+
+/* ======================= */
+/* SIDEBAR */
+/* ======================= */
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+  color: #e5e7eb;
+  padding: 20px 14px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.sidebar-header {
+  margin-bottom: 20px;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.logo-text span {
+  display: block;
+}
+
+/* ======================= */
+/* MENU */
+/* ======================= */
+.menu-list { list-style: none; padding: 0; margin-top: 15px; }
+
+.menu-section {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9ba7b9;
+  margin: 18px 12px 6px;
+  text-transform: uppercase;
+}
+
+.menu-item {
+  margin-bottom: 4px;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #d1d5db;
+  font-size: 15px;
+  transition: 0.25s ease;
+}
+
+.menu-link:hover {
+  background: #2c3f58;
+  color: white;
+  transform: translateX(4px);
+}
+
+.menu-icon {
+  font-size: 17px;
+  width: 20px;
+  opacity: .9;
+  text-align: center;
+}
+
+/* Active menu style */
+.menu-item.active .menu-link {
+  background: #355b92;
+  color: #fff;
+  font-weight: 600;
+  border-left: 4px solid #4e89ff;
+  padding-left: 12px;
+}
+
+/* Logout Special */
+.menu-link-danger { color: #ff6b6b !important; }
+.menu-link-danger:hover { background: #3b2d2d; color: #ffb1b1 !important; }
+
+/* ======================= */
+/* MAIN CONTENT */
+/* ======================= */
+.main-content {
+  margin-left: 260px;
+  padding: 30px;
+}
+
+/* ======================= */
+/* PANEL / CARD */
+/* ======================= */
+.panel {
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+#judul {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#judul img { width: 40px; }
+
+#judul-text p {
+  margin-top: 3px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* ======================= */
+/* TABLE MODERN */
+/* ======================= */
+.table-modern {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  margin-top: 10px;
+}
+
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.table-controls input,
+.table-controls select {
+  border: 1px solid #D1D5DB;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 10px !important;
+}
+
+table thead th {
+  background: #F3F4F6 !important;
+  padding: 12px !important;
+  border: none !important;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4B5563;
+}
+
+table tbody tr {
+  background: #fff;
+  box-shadow: 0px 1px 4px rgba(0,0,0,0.05);
+  border-radius: 8px;
+}
+
+table tbody td {
+  padding: 12px !important;
+  border: none !important;
+  font-size: 14px;
+}
+
+.table-empty {
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+  color: #6b7280;
+}
+
+/* ======================= */
+/* PAGINATION */
+/* ======================= */
+.table-pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.table-pagination button {
+  border: 1px solid #d1d5db;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.table-pagination button:hover {
+  background: #e5e7eb;
+}
+
+/* ============================= */
+/* FIX LAYOUT SUB KRITERIA PAGE */
+/* ============================= */
+.row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
+.col-4 { flex: 1; min-width: 300px; }
+.col-8 { flex: 2; }
+
+.panel-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Form Fix */
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #3775d2;
+}
+
+label { display:block; margin-bottom:5px; font-weight:500; }
+
+.table-responsive { overflow-x: auto; }
+
+/* ======================= */
+/* RESPONSIVE */
+/* ======================= */
+@media (max-width: 900px) {
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .row { flex-direction: column; }
+  .col-4, .col-8 { width: 100%; }
+}
+
+/* Highlight menu aktif */
+.menu-item.active .menu-link {
+  background: #1D4ED8 !important;
+  color: #fff !important;
+  font-weight: 600;
+  transform: translateX(6px);
+}
+
+.menu-item.active .menu-icon {
+  color: white !important;
+}
+
+/* Hover efek */
+.menu-link:hover {
+  background: #334eac !important;
+  color: #fff !important;
+}
