@@ -1,5 +1,5 @@
 <?php
-$page = htmlspecialchars(@$_GET['page']);
+$page = isset($_GET['page']) ? htmlspecialchars($_GET['page']) : 'beranda';
 
 switch ($page) {
 

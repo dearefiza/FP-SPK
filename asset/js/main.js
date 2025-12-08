@@ -34,33 +34,39 @@ $(document).ready(function () {
     });
 
     // ======================
-    // FORM LOGIN (AJAX)
-    // ======================
-    $('form#formlogin').on('submit', function (e) {
-        e.preventDefault();
-        var url = $(this).attr('action');
-        var data = $(this).serialize();
+// FORM LOGIN (AJAX) — FIXED
+// ======================
+$('form#formlogin').on('submit', function (e) {
+    e.preventDefault();
+    var url = $(this).attr('action');
+    var data = $(this).serialize();
 
-        $.ajax({
-            url: url,
-            data: data,
-            dataType: 'JSON',
-            type: 'POST',
-            beforeSend: function () {
-                $("#buttonsimpan").html("process..");
-                $("input,#buttonsimpan,#buttonreset").attr('disabled', true);
-            },
-            success: function (e) {
-                if (e == 'success') {
-                    location.reload();
-                } else {
-                    $('#value').html(e);
-                    $('#alert').slideDown('slow');
-                    setTimeout(() => location.reload(), 1500);
-                }
+    $.ajax({
+        url: url,
+        data: data,
+        dataType: 'JSON',
+        type: 'POST',
+        beforeSend: function () {
+            $("#buttonsimpan").html("process..");
+            $("input,#buttonsimpan,#buttonreset").attr('disabled', true);
+        },
+        success: function (e) {
+            if (e == 'success') {
+
+                // ARAHKAN KE DASHBOARD ADMIN
+                window.location.href = "admin.php?page=beranda";
+
+            } else {
+                $('#value').html(e);
+                $('#alert').slideDown('slow');
+                setTimeout(() => {
+                    $("#alert").slideUp();
+                    $("input,#buttonsimpan,#buttonreset").attr('disabled', false);
+                }, 1500);
             }
-        });
+        }
     });
+});
 
     // ======================
     // NAVIGATION / DROPDOWN
