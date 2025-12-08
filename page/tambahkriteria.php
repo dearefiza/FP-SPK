@@ -23,12 +23,13 @@
         <!-- Sifat Kriteria -->
         <div class="group-input">
             <label for="id_sifat">Sifat kriteria :</label>
-            <select class="form-custom" required id="id_sifat" name="id_sifat">
+            <select class="form-custom" required id="id_sifat" name="sifat_kriteria_id">
                 <option selected disabled>-- Pilih Sifat Kriteria --</option>
                 <option value="1">Benefit</option>
                 <option value="2">Cost</option>
             </select>
         </div>
+
 
         <!-- Bobot Kriteria -->
         <div class="group-input">

@@ -75,10 +75,26 @@ switch ($op) {
             exit;
         }
 
-        $cek   = "SELECT nama_kriteria FROM kriteria WHERE nama_kriteria = '$nama_kriteria'";
+       // CEK apakah nama kriteria sudah ada
+        $cek = $konek->query("SELECT id_kriteria FROM kriteria WHERE nama_kriteria='$nama_kriteria'");
+        if ($cek->num_rows > 0) {
+            echo "<script>alert('Nama kriteria sudah ada!');history.back();</script>";
+            exit;
+        }
+
+        // SIMPAN
         $query = "INSERT INTO kriteria (nama_kriteria, sifat_kriteria_id, bobot)
-                  VALUES ('$nama_kriteria', '$sifat_kriteria_id', '$bobot')";
-        $crud->multiAddData($cek, $query, $konek);
+                VALUES ('$nama_kriteria', '$sifat_kriteria_id', '$bobot')";
+
+        if ($konek->query($query)) {
+            echo "<script>
+                    alert('Kriteria berhasil ditambahkan!');
+                    window.location='../index.php?page=kriteria';
+                </script>";
+        } else {
+            echo "<script>alert('Gagal menambah kriteria: ".$konek->error."');history.back();</script>";
+        }
+
     break;
 
     /* =============================
