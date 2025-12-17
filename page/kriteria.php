@@ -4,7 +4,7 @@
         <img src="asset/image/kriteria.png" class="icon">
         <div id="judul-text">
             <h2 class="text-green">KRITERIA</h2>
-            Halamanan Administrator Kriteria
+            Halaman Administrator Kriteria
         </div>
     </div>
 </div>

@@ -4,7 +4,7 @@
         <img src="asset/image/karyawan.png">
         <div id="judul-text">
             <h2 class="text-green">Karyawan</h2>
-            Halamanan Administrator Karyawan
+            Halaman Administrator Karyawan
         </div>
     </div>
 </div>

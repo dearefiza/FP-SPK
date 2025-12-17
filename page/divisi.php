@@ -3,7 +3,7 @@
         <img src="asset/image/divisi.png">
         <div id="judul-text">
             <h2 class="text-green">Divisi</h2>
-            Halamanan Administrator Divisi
+            Halaman Administrator Divisi
         </div>
     </div>
 </div>
