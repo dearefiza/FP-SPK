@@ -8,7 +8,7 @@ if (isset($_GET['nama_karyawan'])) {
     $query = "
         SELECT d.nama_divisi 
         FROM karyawan k
-        JOIN divisi d ON k.divisi_id = d.id_divisi
+        JOIN divisi d ON k.divisi_id = d.id
         WHERE k.nama_karyawan = ?
     ";
 

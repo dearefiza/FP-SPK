@@ -16,7 +16,7 @@ switch ($op){
     }else{
         $where=null;
     }
-    $query="SELECT id_nilaikriteria,nilai,keterangan,nama_kriteria,id_kriteria FROM nilai_kriteria INNER JOIN kriteria USING (id_kriteria) $where ORDER BY id_kriteria,nilai ASC";
+    $query="SELECT id_nilaikriteria,nilai,keterangan,namaKriteria,id_kriteria FROM nilai_kriteria INNER JOIN kriteria USING (id_kriteria) $where ORDER BY id_kriteria,nilai ASC";
     $execute=$konek ->query($query);
     if ($execute->num_rows > 0){
         $no=1;
@@ -24,12 +24,12 @@ switch ($op){
             echo"
             <tr id='data'>
                 <td>$no</td>
-                <td>".$data['nama_kriteria']."</td>
+                <td>".$data['namaKriteria']."</td>
                 <td>".$data['nilai']."</td>
                 <td>".$data['keterangan']."</td>
                 <td><div class='norebuttom'>
                 <a class=\"btn btn-light-green\" href='./?page=subkriteria&aksi=ubah&id=".$data['id_nilaikriteria']."'><i class='fa fa-pencil-alt'></i></a>
-                <a class=\"btn btn-yellow\" data-a=\"nilai $data[nilai] dalam $data[nama_kriteria]\" id='hapus' href='./proses/proseshapus.php/?op=subkriteria&id=".$data['id_nilaikriteria']."'><i class='fa fa-trash-alt'</a></td></div>
+                <a class=\"btn btn-yellow\" data-a=\"nilai $data[nilai] dalam $data[namaKriteria]\" id='hapus' href='./proses/proseshapus.php/?op=subkriteria&id=".$data['id_nilaikriteria']."'><i class='fa fa-trash-alt'</a></td></div>
             </tr>";
             $no++;
         }
@@ -39,11 +39,11 @@ switch ($op){
         break;
     case 'nilai':
         if (!empty($id)) {
-            $where="WHERE nilai_supplier.id_karyawan='$id'";
+            $where="WHERE nilai_supplier.id_jenisbarang='$id'";
         }else{
             $where=null;
         }
-        $query="SELECT id_nilaisupplier,id_divisi,divisi.nama_divisi AS nama_divisi,karyawan.id_karyawan AS id_karyawan,karyawan.nama_karyawan AS nama_karyawan FROM nilai_supplier INNER JOIN supplier USING(id_supplier) INNER JOIN karyawan USING (id_karyawan) $where GROUP BY id_supplier ORDER BY id_karyawan,id_supplier ASC";
+        $query="SELECT id_nilaisupplier,id_supplier,supplier.namaSupplier AS namaSupplier,jenis_barang.id_jenisbarang AS id_jenisbarang,jenis_barang.namaBarang AS namaBarang FROM nilai_supplier INNER JOIN supplier USING(id_supplier) INNER JOIN jenis_barang USING (id_jenisbarang) $where GROUP BY id_supplier ORDER BY id_jenisbarang,id_supplier ASC";
         $execute=$konek->query($query);
         if ($execute->num_rows > 0){
             $no=1;
@@ -51,13 +51,13 @@ switch ($op){
                echo"
                 <tr id='data'>
                     <td>$no</td>
-                    <td>$data[nama_karyawan]</td>
-                    <td>$data[nama_divisi]</td>
+                    <td>$data[namaBarang]</td>
+                    <td>$data[namaSupplier]</td>
                     <td>
                     <div class='norebuttom'>
-                    <a class=\"btn btn-green\" href=\"./?page=penilaian&aksi=lihat&a=$data[id_divisi]&b=$data[id_karyawan]\"><i class='fa fa-eye'></i></a>
-                    <a class=\"btn btn-light-green\" href=\"./?page=penilaian&aksi=ubah&a=$data[id_divisi]&b=$data[id_karyawan]\"><i class='fa fa-pencil-alt'></i></a>
-                    <a class=\"btn btn-yellow\" data-a=\".$data[nama_karyawan] - $data[nama_divisi]\" id='hapus' href='./proses/proseshapus.php/?op=nilai&id=".$data['id_divisi']."'><i class='fa fa-trash-alt'></i></a></td>
+                    <a class=\"btn btn-green\" href=\"./?page=penilaian&aksi=lihat&a=$data[id_supplier]&b=$data[id_jenisbarang]\"><i class='fa fa-eye'></i></a>
+                    <a class=\"btn btn-light-green\" href=\"./?page=penilaian&aksi=ubah&a=$data[id_supplier]&b=$data[id_jenisbarang]\"><i class='fa fa-pencil-alt'></i></a>
+                    <a class=\"btn btn-yellow\" data-a=\".$data[namaBarang] - $data[namaSupplier]\" id='hapus' href='./proses/proseshapus.php/?op=nilai&id=".$data['id_supplier']."'><i class='fa fa-trash-alt'></i></a></td>
                 </div></tr>";
                 $no++;
             }

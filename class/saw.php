@@ -21,10 +21,10 @@ class saw {
     //mendapatkan kriteria
     public function getKriteria(){
         $data=array();
-        $querykriteria="SELECT nama_kriteria FROM kriteria";//query tabel kriteria
+        $querykriteria="SELECT namaKriteria FROM kriteria";//query tabel kriteria
         $execute=$this->getConnect()->query($querykriteria);
         while ($row=$execute->fetch_array(MYSQLI_ASSOC)) {
-            array_push($data,$row['nama_kriteria']);
+            array_push($data,$row['namaKriteria']);
         }
         return $data;
     }
@@ -91,7 +91,7 @@ class saw {
     public function getHasil(){
     $queryHasil     =   "SELECT hasil.hasil AS hasil,jenis_barang.namaBarang,supplier.namaSupplier AS namaSupplier FROM hasil JOIN jenis_barang ON jenis_barang.id_jenisbarang=hasil.id_jenisbarang JOIN supplier ON supplier.id_supplier=hasil.id_supplier WHERE hasil.hasil=(SELECT MAX(hasil) FROM hasil WHERE id_jenisbarang='$this->idCookie')";
     $execute        =   $this->getConnect()->query($queryHasil)->fetch_array(MYSQLI_ASSOC);
-    echo "<p>Jadi rekomendasi pemilihan supplier <i>$execute[nama_karyawan]</i> jatuh pada <i>$execute[namaSupplier]</i> dengan Nilai <b>".round($execute['hasil'],3)."</b></p>";
+    echo "<p>Jadi rekomendasi pemilihan supplier <i>$execute[namaBarang]</i> jatuh pada <i>$execute[namaSupplier]</i> dengan Nilai <b>".round($execute['hasil'],3)."</b></p>";
     }
 
 }

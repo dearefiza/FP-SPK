@@ -3,7 +3,7 @@
         <img src="asset/image/bobot.png" class="icon">
         <div id="judul-text">
             <h2 class="text-green">Penilaian</h2>
-            Halaman Administrator Penilaian
+            Halamanan Administrator Penilaian
         </div>
     </div>
 </div>

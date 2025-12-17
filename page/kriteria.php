@@ -4,7 +4,7 @@
         <img src="asset/image/kriteria.png" class="icon">
         <div id="judul-text">
             <h2 class="text-green">KRITERIA</h2>
-            Halaman Administrator Kriteria
+            Halamanan Administrator Kriteria
         </div>
     </div>
 </div>
@@ -42,10 +42,10 @@
                         <?php
                         // JOIN ke tabel sifat_kriteria
                         $query = "
-                            SELECT k.id_kriteria, k.nama_kriteria, s.nama_sifat, k.bobot
+                            SELECT k.id, k.nama_kriteria, s.nama_sifat, k.bobot
                             FROM kriteria k
-                            LEFT JOIN sifat_kriteria s ON k.sifat_kriteria_id = s.id_sifat
-                             ORDER BY k.id_kriteria ASC
+                            LEFT JOIN sifat_kriteria s ON k.sifat_kriteria_id = s.id
+                             ORDER BY k.id ASC
                         ";
                         $execute=$konek->query($query);
                         if ($execute->num_rows > 0){
@@ -58,8 +58,8 @@
                                     <td>$data[nama_sifat]</td>
                                     <td>$data[bobot]</td>
                                     <td><div class='norebuttom'>
-                                    <a class=\"btn btn-light-green\" href='./?page=kriteria&aksi=ubah&id=".$data['id_kriteria']."'><i class='fa fa-pencil-alt'></i></a>
-                                    <a class=\"btn btn-yellow\" data-a=".$data['nama_sifat']." id='hapus' href='./proses/proseshapus.php/?op=kriteria&id=".$data['id_kriteria']."'><i class='fa fa-trash-alt'></i></a></td>
+                                    <a class=\"btn btn-light-green\" href='./?page=kriteria&aksi=ubah&id=".$data['id']."'><i class='fa fa-pencil-alt'></i></a>
+                                    <a class=\"btn btn-yellow\" data-a=".$data['nama_sifat']." id='hapus' href='./proses/proseshapus.php/?op=kriteria&id=".$data['id']."'><i class='fa fa-trash-alt'></i></a></td>
                                 </div></tr>";
                                 $no++;
                             }

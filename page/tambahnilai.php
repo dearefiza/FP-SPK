@@ -2,7 +2,7 @@
     <b class="text-green">Tambah Penilaian</b>
 </div>
 
-<form id="form" method="POST" action="/FP-SPK-main/proses/prosestambah.php">
+<form id="form" method="POST" action="./proses/prosestambah.php">
     <input type="hidden" name="op" value="penilaian">
     <input type="hidden" id="karyawan_id" name="karyawan_id">
     <input type="hidden" id="divisi_id" name="divisi_id">
@@ -46,4 +46,4 @@
     </div>
 </form>
 
-<script src="./asset/js/karyawan_by_id.js"></script>
+<script src="asset/js/karyawan_by_id.js"></script>

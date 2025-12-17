@@ -1,9 +1,9 @@
 <div class="panel">
     <div class="panel-middle" id="judul">
-        <img src="asset/image/divisi.png">
+        <img src="asset/image/divisi.png" class="icon">
         <div id="judul-text">
             <h2 class="text-green">Divisi</h2>
-            Halaman Administrator Divisi
+            Halamanan Administrator Divisi
         </div>
     </div>
 </div>
@@ -42,8 +42,8 @@
                                     <td>$data[nama_divisi]</td>
                                     <td>
                                     <div class='norebuttom'>
-                                    <a class=\"btn btn-light-green\" href='./?page=divisi&aksi=ubah&id=".$data['id_divisi']."'><i class='fa fa-pencil-alt'></i></a>
-                                    <a class=\"btn btn-yellow\" data-a=".$data['nama_divisi']." id='hapus' href='./proses/proseshapus.php/?op=divisi&id=".$data['id_divisi']."'><i class='fa fa-trash-alt'></i></a>
+                                    <a class=\"btn btn-light-green\" href='./?page=divisi&aksi=ubah&id=".$data['id']."'><i class='fa fa-pencil-alt'></i></a>
+                                    <a class=\"btn btn-yellow\" data-a=".$data['nama_divisi']." id='hapus' href='./proses/proseshapus.php/?op=divisi&id=".$data['id']."'><i class='fa fa-trash-alt'></i></a>
                                     </div></td>
                                 </tr>";
                                 $no++;

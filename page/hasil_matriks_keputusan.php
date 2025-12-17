@@ -6,7 +6,7 @@ $cookiePilih=@$_COOKIE['pilih'];
 if (isset($cookiePilih) && !empty($cookiePilih)){
 /***************awal set variabel************/
     $valueMinMax=array(); $kriteriaArray=array(); $supplierArray=array(); $forminmax=array(); $simpanNormalisasi=array(); $bobotArray=array();
-    $querykriteria="SELECT nama_kriteria FROM kriteria";//query tabel kriteria
+    $querykriteria="SELECT namaKriteria FROM kriteria";//query tabel kriteria
     //query get data alternative
     $queryAlternative="SELECT supplier.namaSupplier AS namaSupplier,id_supplier FROM nilai_supplier INNER JOIN supplier USING(id_supplier) WHERE id_jenisbarang='$cookiePilih' GROUP BY id_supplier ";
     //query get data bobot
@@ -25,8 +25,8 @@ $executeQueryTabel=$konek->query( $querykriteria);
 echo "<div class='panel-middle'>";
 echo "<p><h3>Matriks Keputusan</h3></p><table><tr><th rowspan='2'>Alternative</th><th colspan='$executeQueryTabel->num_rows'>Kriteria</th></tr><tr>";
 while ($data=$executeQueryTabel->fetch_array(MYSQLI_ASSOC)){
-    echo "<th>$data[nama_kriteria]</th>";
-    array_push($kriteriaArray,$data['nama_kriteria']);//simpan nama nama kriteria ke array
+    echo "<th>$data[namaKriteria]</th>";
+    array_push($kriteriaArray,$data['namaKriteria']);//simpan nama nama kriteria ke array
 }
 echo "</tr>";
 /////////////////////////////////////////////////////////////////akhir set header table matriks keputusan
@@ -56,8 +56,8 @@ echo "</table>";
 /******akhir isi table matriks keputusan****/
 /////////////////////////////////////////////////////////////////awal set header table normalisasi
 echo "<p><h3>Normalisasi Matriks Keputusan</h3></p><table><tr><th rowspan='2'>Alternative</th><th colspan='$executeQueryTabel->num_rows'>Kriteria</th></tr><tr>";
-foreach ($kriteriaArray as $nama_kriteria) {
-    echo "<th>$nama_kriteria</th>";
+foreach ($kriteriaArray as $namaKriteria) {
+    echo "<th>$namaKriteria</th>";
 }
 echo "</tr>";
 /////////////////////////////////////////////////////////////////akhir set header table normalisasi
@@ -84,8 +84,8 @@ echo "</table>";
 /******akhir isi table normalisasi****/
 /////////////////////////////////////////////////////////////////awal set header table perangkingan
 echo "<p><h3>Normalisasi Matriks Keputusan</h3></p> <table> <tr><th rowspan='2'>Alternative</th><th colspan='$executeQueryTabel->num_rows'>Kriteria</th><th rowspan='2'>Hasil</th></tr><tr>";
-foreach ($kriteriaArray as $nama_kriteria) {
-    echo "<th>$nama_kriteria</th>";
+foreach ($kriteriaArray as $namaKriteria) {
+    echo "<th>$namaKriteria</th>";
 }
 /////////////////////////////////////////////////////////////////akhir set header table perangkingan
 /******awal isi table perangkingan****/

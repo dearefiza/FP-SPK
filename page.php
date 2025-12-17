@@ -1,9 +1,8 @@
 <?php
-$page = isset($_GET['page']) ? htmlspecialchars($_GET['page']) : 'beranda';
+$page = htmlspecialchars($_GET['page'] ?? '');
 
 switch ($page) {
-
-    case null:
+    case '':
     case 'beranda':
         include 'page/beranda.php';
         break;
@@ -24,12 +23,7 @@ switch ($page) {
         include 'page/subkriteria.php';
         break;
 
-    case 'bobot':
-        include 'page/bobot.php';
-        break;
-
     case 'penilaian':
-    case 'penilaiankaryawan': // opsional, biar tidak error lagi
         include 'page/nilai.php';
         break;
 
@@ -40,12 +34,7 @@ switch ($page) {
     case 'tambahbobot':
         include 'page/tambahbobot.php';
         break;
-    
-    case 'ahp':
-        include 'page/ahp.php';
-        break;
 
     default:
-        echo "<h3 style='padding:30px;'>Halaman tidak ditemukan.</h3>";
+        include 'page/404.php';
 }
-?>

@@ -5,7 +5,7 @@
     <input type="hidden" name="op" value="divisi">
     <div class="panel-middle">
         <div class="group-input">
-            <label for="divisi" >Nama Divisi :</label>
+            <label for="supplier" >Nama Divisi :</label>
             <input type="text" class="form-custom" required autocomplete="off" placeholder="Nama Divisi" id="divisi" name="divisi">
         </div>
     </div>
