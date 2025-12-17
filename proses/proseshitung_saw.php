@@ -6,6 +6,50 @@ $kriteria = $konek->query("SELECT * FROM kriteria ORDER BY id_kriteria ASC")
                   ->fetch_all(MYSQLI_ASSOC);
 
 // ===============================
+// 1a. Siapkan bobot + sensitivitas
+// ===============================
+$jml_kriteria = count($kriteria);
+
+// Ambil bobot awal dalam array (dari tabel kriteria)
+$bobot_awal = [];
+for ($i = 0; $i < $jml_kriteria; $i++) {
+    $bobot_awal[$i] = (float)$kriteria[$i]['bobot'];
+}
+
+// Normalisasi bobot awal (kalau belum)
+$sum_bobot_awal = array_sum($bobot_awal);
+if ($sum_bobot_awal > 0) {
+    for ($i = 0; $i < $jml_kriteria; $i++) {
+        $bobot_awal[$i] = $bobot_awal[$i] / $sum_bobot_awal;
+    }
+}
+
+// Parameter sensitivitas dari URL
+// sens_k = id_kriteria yang diuji (1..5), sens_p = persen perubahan (-300..300)
+$sens_k = isset($_GET['sens_k']) ? (int)$_GET['sens_k'] : 0;
+$sens_p = isset($_GET['sens_p']) ? (int)$_GET['sens_p'] : 0;
+
+// Salin bobot awal ke bobot yang akan dipakai SAW
+$bobot_saw = $bobot_awal;
+
+// Jika ada pengujian sensitivitas
+if ($sens_k > 0 && $sens_k <= $jml_kriteria && $sens_p != 0) {
+    $idx = $sens_k - 1; // index array (0-based)
+    $factor = 1 + ($sens_p / 100); // misal +20% -> faktor 1.2
+
+    // Ubah bobot kriteria terpilih
+    $bobot_saw[$idx] = $bobot_saw[$idx] * $factor;
+
+    // Normalisasi ulang supaya total bobot tetap 1
+    $sum_new = array_sum($bobot_saw);
+    if ($sum_new > 0) {
+        for ($i = 0; $i < $jml_kriteria; $i++) {
+            $bobot_saw[$i] = $bobot_saw[$i] / $sum_new;
+        }
+    }
+}
+
+// ===============================
 // 2. Ambil data penilaian (K1–K5 per karyawan)
 // ===============================
 $query = "
@@ -74,16 +118,19 @@ $hasil_ranking = [];
 
 foreach ($data as $row) {
 
-    $normRow = [];   // menyimpan nilai normalisasi
-    $wrRow   = [];   // menyimpan nilai (W × R)
-    $totalSAW = 0;
+    $normRow   = [];   // menyimpan nilai normalisasi
+    $wrRow     = [];   // menyimpan nilai (W × R)
+    $totalSAW  = 0;
 
     // Loop kriteria K1–K5
     for ($i = 1; $i <= 5; $i++) {
 
         $nilai = (float)$row["K".$i];
-        $bobot = (float)$kriteria[$i-1]['bobot'];
 
+        // Gunakan bobot yang sudah disesuaikan sensitivitas
+        $bobot = $bobot_saw[$i-1];
+
+        // sifat_kriteria_id: 1 = benefit, selain itu = cost
         $tipe = ($kriteria[$i-1]['sifat_kriteria_id'] == 1) ? 'benefit' : 'cost';
 
         // Normalisasi

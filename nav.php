@@ -31,6 +31,14 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'beranda';
             </a>
         </li>
 
+        <!-- AHP -->
+        <li class="menu-item <?= ($page == 'ahp') ? 'active' : '' ?>">
+            <a href="?page=ahp" class="menu-link">
+                <i class="fa fa-list menu-icon"></i>
+                <span>Perhitungan AHP</span>
+            </a>
+        </li>
+
         <!-- KRITERIA -->
         <li class="menu-item <?= ($page == 'kriteria') ? 'active' : '' ?>">
             <a href="?page=kriteria" class="menu-link">

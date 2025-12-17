@@ -40,6 +40,10 @@ switch ($page) {
     case 'tambahbobot':
         include 'page/tambahbobot.php';
         break;
+    
+    case 'ahp':
+        include 'page/ahp.php';
+        break;
 
     default:
         echo "<h3 style='padding:30px;'>Halaman tidak ditemukan.</h3>";
